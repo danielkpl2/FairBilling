@@ -42,7 +42,7 @@ public class LogReader {
 	 * @param line a log entry
 	 * @return true if the format is valid, false if not
 	 */
-	public static boolean validate(String line){
+	private static boolean validate(String line){
 		String[] lineArray = line.split(" ");
 		
 		if(lineArray.length != 3) return false; //skip lines in incorrect format
@@ -58,10 +58,22 @@ public class LogReader {
 	public int getLogSize(){
 		return log.size();
 	}
+	public Object getLog(){
+		return log;
+	}
+	
+//	public ArrayList<ArrayList<String>> getLog(){
+//		return log;
+//	}
 	
 	public String toString(){
-		return log.toString();
+		String s = "";
+		for(ArrayList<String> l: log){
+			s += l + "\n";
+		}
+		return s;
 	}
+
 	
 	
 	
