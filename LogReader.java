@@ -1,8 +1,6 @@
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.text.SimpleDateFormat;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 /**
@@ -23,21 +21,14 @@ public class LogReader {
 			String line;
 			int index = 0;
 			while((line = bufferedReader.readLine()) != null){
-				log.add(new ArrayList<String>());
+
+				if(!validate(line)) continue;
+				
 				String[] lineArray = line.split(" ");
-				if(lineArray.length != 3) continue; //skip lines in incorrect format
-				String timeStamp = lineArray[0];
-				SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm:ss");
-				try{
-					dateFormat.parse(timeStamp); //tries to parse the timestamp, if the format is incorrect then the line is skipped
-				}catch(ParseException pe){
-					continue;			
-				}
+				log.add(new ArrayList<String>());
 				for(int i = 0; i < lineArray.length; i++){
-					//System.out.print(lineArray[i] + " ");
 					log.get(index).add(lineArray[i]);
 				}
-				//System.out.println();
 				index++;
 			}
 			bufferedReader.close();
@@ -46,9 +37,30 @@ public class LogReader {
 		}
 		
 	}
+	/**
+	 * Validates the log entry format
+	 * @param line a log entry
+	 * @return true if the format is valid, false if not
+	 */
+	public static boolean validate(String line){
+		String[] lineArray = line.split(" ");
+		
+		if(lineArray.length != 3) return false; //skip lines in incorrect format
+		
+		//http://stackoverflow.com/questions/25873636/regex-pattern-for-exactly-hhmmss-time-string
+		if(!lineArray[0].matches("(?:[01]\\d|2[0123]):(?:[012345]\\d):(?:[012345]\\d)")) return false;
+
+		if(!lineArray[2].equals("Start") && !lineArray[2].equals("End")) return false;
+		
+		return true;
+	}
 	
 	public int getLogSize(){
 		return log.size();
+	}
+	
+	public String toString(){
+		return log.toString();
 	}
 	
 	
