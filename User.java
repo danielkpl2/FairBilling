@@ -32,6 +32,10 @@ public class User {
 		}
 	}
 	
+	public String toString(){
+		return "starts: " + sessionStarts + "\nends: " + sessionEnds;
+	}
+	
 	
 	/**
 	 * @return the name
@@ -45,6 +49,42 @@ public class User {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+
+
+	/**
+	 * @return the sessionStarts
+	 */
+	public ArrayList<LocalTime> getSessionStarts() {
+		return sessionStarts;
+	}
+
+
+
+	/**
+	 * @param sessionStarts the sessionStarts to set
+	 */
+	public void setSessionStarts(ArrayList<LocalTime> sessionStarts) {
+		this.sessionStarts = sessionStarts;
+	}
+
+
+
+	/**
+	 * @return the sessionEnds
+	 */
+	public ArrayList<LocalTime> getSessionEnds() {
+		return sessionEnds;
+	}
+
+
+
+	/**
+	 * @param sessionEnds the sessionEnds to set
+	 */
+	public void setSessionEnds(ArrayList<LocalTime> sessionEnds) {
+		this.sessionEnds = sessionEnds;
 	}
 
 }

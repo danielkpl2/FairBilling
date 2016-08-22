@@ -6,7 +6,7 @@ import java.io.StringReader;
 import org.junit.Test;
 
 
-public class LogReaderTest {
+public class SessionLogTest {
 	private String newLine = System.getProperty("line.separator");
 	
 	@Test
@@ -15,7 +15,7 @@ public class LogReaderTest {
 				"14:02:05 CHARLIE End" + newLine +
 				"14:02:34 ALICE99 End";
 		BufferedReader bf = new BufferedReader(new StringReader(testString));
-		LogReader logReader = new LogReader(bf);
+		SessionLog logReader = new SessionLog(bf);
 		assertEquals(3, logReader.getLogSize());
 	}
 	
@@ -27,7 +27,7 @@ public class LogReaderTest {
 				"one two three" + newLine +
 				"14:02:34 ALICE99 End";
 		BufferedReader bf = new BufferedReader(new StringReader(testString));
-		LogReader logReader = new LogReader(bf);
+		SessionLog logReader = new SessionLog(bf);
 		assertEquals(3, logReader.getLogSize());
 	}
 	
@@ -45,7 +45,7 @@ public class LogReaderTest {
 				"ab:cd:ef CHARLIE Start";
 
 		BufferedReader bf = new BufferedReader(new StringReader(testString));
-		LogReader logReader = new LogReader(bf);
+		SessionLog logReader = new SessionLog(bf);
 		assertEquals(2, logReader.getLogSize());
 		
 	}
@@ -57,7 +57,7 @@ public class LogReaderTest {
 				"14:02:34 ALICE99 Start";
 		
 		BufferedReader bf = new BufferedReader(new StringReader(testString));
-		LogReader logReader = new LogReader(bf);
+		SessionLog logReader = new SessionLog(bf);
 		assertEquals(2, logReader.getLogSize());
 	}
 	

@@ -8,14 +8,14 @@ import java.util.ArrayList;
  * @author Daniel Kasprowicz
  *
  */
-public class LogReader {
+public class SessionLog {
 	private ArrayList<ArrayList<String>> log;
 
-	public LogReader(String fileName) throws FileNotFoundException{
+	public SessionLog(String fileName) throws FileNotFoundException{
 		this(new BufferedReader(new FileReader(fileName)));
 	}
 
-	public LogReader(BufferedReader bufferedReader){
+	public SessionLog(BufferedReader bufferedReader){
 		try{
 			log = new ArrayList<ArrayList<String>>();
 			String line;
@@ -58,7 +58,11 @@ public class LogReader {
 	public int getLogSize(){
 		return log.size();
 	}
-	public Object getLog(){
+//	public Object getLog(){
+//		return log;
+//	}
+	
+	public ArrayList<ArrayList<String>> getLog(){
 		return log;
 	}
 	
