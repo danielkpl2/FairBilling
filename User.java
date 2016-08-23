@@ -6,6 +6,7 @@ public class User {
 	private String name;
 	private ArrayList<LocalTime> sessionStarts;
 	private ArrayList<LocalTime> sessionEnds;
+	//private ArrayList<LocalTime> 
 	//private Date timeStamp;
 	//private Session sessions;
 
