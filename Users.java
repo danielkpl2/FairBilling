@@ -48,30 +48,8 @@ public class Users {
 
 	private void enumerateSessionPairs() {
 		for(Map.Entry<String, User> user: users.entrySet()){
-			CircularArrayList<LocalTime> startList = new CircularArrayList<LocalTime>();
-			CircularArrayList<LocalTime> endList = new CircularArrayList<LocalTime>();
-			startList.addAll(user.getValue().getSessionStarts());
-			endList.addAll(user.getValue().getSessionEnds());
-			
-			ArrayList<ArrayList<LocalTime[]>> sessions = user.getValue().getSessionPairs();
-			
-			for(int i = 0; i < startList.size(); i++){
-				endList.setIndex(i);				
-				Iterator itStart = startList.iterator();
-				Iterator itEnd = endList.iterator();
-				sessions.add(new ArrayList<LocalTime[]>());
-				while(itStart.hasNext() && itEnd.hasNext()){
-					LocalTime startTime = (LocalTime) itStart.next();
-					LocalTime endTime = (LocalTime) itEnd.next();
-					
-					if(endTime.isBefore(startTime)){
-						sessions.remove(sessions.size()-1); 
-						startList.setIndex(0); //without this, the start times would continue the loop
-						break;
-					}
-					sessions.get(sessions.size()-1).add(new LocalTime[]{startTime, endTime});
-				}	
-			}
+			user.getValue().enumerateSessionPairs();
+
 		}
 	}
 

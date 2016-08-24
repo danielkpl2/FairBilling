@@ -29,8 +29,8 @@ public class CircularArrayList<E> extends ArrayList<E> {
 	
 	//this will make the for loop work with a circular arraylist
 	@Override
-	public Iterator iterator(){ 
-		return new Iterator(){
+	public Iterator<E> iterator(){ 
+		return new Iterator<E>(){
 			int count = size();
 			public void forEachRemaining(Consumer arg0) {
 				// TODO Auto-generated method stub
@@ -41,7 +41,7 @@ public class CircularArrayList<E> extends ArrayList<E> {
 				return(count > 0);
 			}
 
-			public Object next() {
+			public E next() {
 				count--;
 				if(index == size()){
 					index = 0;

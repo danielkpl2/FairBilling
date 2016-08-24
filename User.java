@@ -1,5 +1,6 @@
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class User {
@@ -8,6 +9,42 @@ public class User {
 	private ArrayList<LocalTime> sessionEnds;
 	private ArrayList<ArrayList<LocalTime[]>> sessionPairs;
 
+	public User(String name, LocalTime timestamp, String status){
+		this.name = name;
+		sessionStarts = new ArrayList<LocalTime>();
+		sessionEnds = new ArrayList<LocalTime>();
+		sessionPairs = new ArrayList<ArrayList<LocalTime[]>>();
+		addSessionStatus(timestamp, status);
+	}
+	
+	
+	protected void enumerateSessionPairs(){
+		CircularArrayList<LocalTime> startList = new CircularArrayList<LocalTime>();
+		CircularArrayList<LocalTime> endList = new CircularArrayList<LocalTime>();
+		startList.addAll(sessionStarts);
+		endList.addAll(sessionEnds);
+		
+		ArrayList<ArrayList<LocalTime[]>> sessions = sessionPairs;
+		
+		for(int i = 0; i < startList.size(); i++){
+			endList.setIndex(i);				
+			Iterator itStart = startList.iterator();
+			Iterator itEnd = endList.iterator();
+			sessions.add(new ArrayList<LocalTime[]>());
+			while(itStart.hasNext() && itEnd.hasNext()){
+				LocalTime startTime = (LocalTime) itStart.next();
+				LocalTime endTime = (LocalTime) itEnd.next();
+				
+				if(endTime.isBefore(startTime)){
+					sessions.remove(sessions.size()-1); 
+					startList.setIndex(0); //without this, the start times would continue the loop
+					break;
+				}
+				sessions.get(sessions.size()-1).add(new LocalTime[]{startTime, endTime});
+			}	
+		}
+	}
+	
 	/**
 	 * @return the sessionPairs
 	 */
@@ -23,15 +60,6 @@ public class User {
 	public void setSessionPairs(ArrayList<ArrayList<LocalTime[]>> sessionPairs) {
 		this.sessionPairs = sessionPairs;
 	}
-
-	public User(String name, LocalTime timestamp, String status){
-		this.name = name;
-		sessionStarts = new ArrayList<LocalTime>();
-		sessionEnds = new ArrayList<LocalTime>();
-		sessionPairs = new ArrayList<ArrayList<LocalTime[]>>();
-		addSessionStatus(timestamp, status);
-	}
-	
 
 	public void addSession(LocalTime timestamp, String status){
 		addSessionStatus(timestamp, status);
