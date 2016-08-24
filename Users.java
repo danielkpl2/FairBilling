@@ -16,61 +16,63 @@ public class Users {
 	public Users(SessionLog log){
 		users = new HashMap<String, User>();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss");
-		//ArrayList<ArrayList<String>> l = (ArrayList<ArrayList<String>>)(log).getLog();
 		
 		earliestTimestamp = LocalTime.parse(log.getLog().get(0).get(0), formatter);
 		latestTimestamp = LocalTime.parse(log.getLog().get(log.getLog().size()-1).get(0), formatter);
 		
-		//System.out.println(earliestTimestamp + " " + latestTimestamp);
-		
 		for(ArrayList<String> entry: log.getLog()){
-			
-			
 			LocalTime timestamp = LocalTime.parse(entry.get(0), formatter);
-			
 			addSession(entry.get(1), timestamp, entry.get(2));
 		}
 		
 		checkOrphanedSessions();
 		enumerateSessionPairs();
+		
 	}
 	
+	public void printReport() {
+		for(Map.Entry<String, User> user: users.entrySet()){
+			Integer min = null;
+			for(ArrayList<LocalTime[]> sessions: user.getValue().getSessionPairs()){
+				int duration = 0;
+				for(LocalTime[] time: sessions){
+					duration += Duration.between(time[0], time[1]).getSeconds();
+				}
+				if(min == null || min > duration){
+					min = duration;
+				}
+			}
+			System.out.println(user.getKey() + " " + user.getValue().getSessionStarts().size() + " " + min);
+		}
+	}
+
 	private void enumerateSessionPairs() {
 		for(Map.Entry<String, User> user: users.entrySet()){
 			CircularArrayList<LocalTime> startList = new CircularArrayList<LocalTime>();
 			CircularArrayList<LocalTime> endList = new CircularArrayList<LocalTime>();
 			startList.addAll(user.getValue().getSessionStarts());
 			endList.addAll(user.getValue().getSessionEnds());
-			 
 			
-			//LocalTime [][][][] sessions = new LocalTime[startList.size()][startList.size()][endList.size()][2];
-			LocalTime [][][][] sessions = new LocalTime[10][10][10][10];
+			ArrayList<ArrayList<LocalTime[]>> sessions = user.getValue().getSessionPairs();
 			
 			for(int i = 0; i < startList.size(); i++){
-				startList.setIndex(i);
-				endList.setIndex(i);
-				for(LocalTime startTime: startList){
-					int j = startList.getIndex();
-					for(LocalTime endTime: endList){
-						int k = endList.getIndex();
-						//sessions[j][k] = new ArrayList
-						System.out.println(startTime + " - " + endTime);
-						sessions[i][j][k][0] = startTime;
-						//System.out.println(sessions[i][j][k][0]);
-						sessions[i][j][k][1] = endTime;
-						//System.out.println(sessions);
+				endList.setIndex(i);				
+				Iterator itStart = startList.iterator();
+				Iterator itEnd = endList.iterator();
+				sessions.add(new ArrayList<LocalTime[]>());
+				while(itStart.hasNext() && itEnd.hasNext()){
+					LocalTime startTime = (LocalTime) itStart.next();
+					LocalTime endTime = (LocalTime) itEnd.next();
+					
+					if(endTime.isBefore(startTime)){
+						sessions.remove(sessions.size()-1); 
+						startList.setIndex(0); //without this, the start times would continue the loop
+						break;
 					}
-					System.out.println();
-				}
-				System.out.println();
+					sessions.get(sessions.size()-1).add(new LocalTime[]{startTime, endTime});
+				}	
 			}
-			
-			//System.out.print(startList);
 		}
-		
-		
-		
-		
 	}
 
 	private void checkOrphanedSessions() {
@@ -114,7 +116,6 @@ public class Users {
 				}
 			}
 		}
-		
 	}
 
 	private void addSession(String username, LocalTime timestamp, String status){
@@ -131,7 +132,5 @@ public class Users {
 			s += user.getKey() + ": " + user.getValue() + "\n";
 		}
 		return s;
-		
 	}
-
 }

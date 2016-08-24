@@ -27,14 +27,11 @@ public class CircularArrayList<E> extends ArrayList<E> {
 		return index;
 	}
 	
-	//this will make the for each loop work with a circular arraylist
+	//this will make the for loop work with a circular arraylist
 	@Override
 	public Iterator iterator(){ 
 		return new Iterator(){
 			int count = size();
-			//int index = 0;
-			//int i = 0;
-
 			public void forEachRemaining(Consumer arg0) {
 				// TODO Auto-generated method stub
 				

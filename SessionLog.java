@@ -58,18 +58,11 @@ public class SessionLog {
 	public int getLogSize(){
 		return log.size();
 	}
-//	public Object getLog(){
-//		return log;
-//	}
 	
 	public ArrayList<ArrayList<String>> getLog(){
 		return log;
 	}
-	
-//	public ArrayList<ArrayList<String>> getLog(){
-//		return log;
-//	}
-	
+		
 	public String toString(){
 		String s = "";
 		for(ArrayList<String> l: log){
@@ -77,10 +70,4 @@ public class SessionLog {
 		}
 		return s;
 	}
-
-	
-	
-	
-	
-
 }
